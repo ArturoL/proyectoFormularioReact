@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="divDatos"></div>
+    <button id="btnPedirDatos">Petición HET HTTP</button>
+    <script>
+        let divDatos= document.getElementById('divDatos')
+        let btnPedirDatos= document.getElementById('btnPedirDatos')
+        let objAJAX = new XMLHttpRequest();
+        
+        btnPedirDatos.onclick=function(){
+            objAJAX.send(); // Venga AJAX, lanza la peticion de manera asíncrona 
+                            //En otro hilo (subproceso) a tu rollito
+        }
+        // Cuando cambie ele stado de la peticion Http en el objeto AJAX
+        objAJAX.onreadystatechange = function(){
+            alert(`Estado de los datos: ${objAJAX.readyState}
+            Estado del Http: ${objAJAX.status}`)
+            
+            
+            if(objAJAX.readyState==4){
+                if(objAJAX.status==200){
+                    divDatos.style.border='10px solid green';
+                    divDatos.innerHTML=objAJAX.responseText;
+
+                    //Convertimos el Json en onj JS y mapeamos la coleccion y entre parentesis
+                    // la coleccion (array)
+
+                    let arrayUsu = JSON.parse(objAJAX.responseText);
+                    let arrayMayus = new Array();
+                    for( usu of arrayUsu){
+                        arrayMayus.push(usu.email.toUpperCase());
+                    }
+
+                    alert ("For" + JSON.stringify(arrayMayus));
+
+                    let arrayForEach = new Array();
+                    arrayUsu.forEach(usu=> {
+                        arrayForEach.push(usu.email.toUpperCase());
+                        
+                    });
+
+                    alert('forEach '+ JSON.stringify(arrayForEach));
+
+
+                    let arrayMapeao = arrayUsu.map(u => { return usu.email;});
+                    alert('forEach '+ JSON.stringify(arrayMapeao));
+
+
+                } else {
+                    divDatos.style.border='1px solid red';
+                    divDatos.innerHTML= 'La peticion se ha atasacado ';
+                }
+            }
+        }
+        objAJAX.open('GET', 'http://localhost:4000/api/usuarios/')
+    </script>
+</body>
+</html>
