@@ -3,8 +3,41 @@ import React, { Component } from 'react';
 
 class ListaUsuarios extends /*React.*/ Component{
 
+    constructor(props){
+        super(props);    //Invocamos al constructor del padre
+                        // pasándole las propiedades públicas.
+        
+        //Para evitar el problema del this con JS hacemos siguiente
+        // en el futuro cuando se invoque el metodo this sea realmente this
+        
+        this.onDelete = this.onDelete.bind(this);
+
+    }
+    onDelete(evt){
+       
+        let el = evt.target;
+        let id = el.dataset.idusu;
+        console.log(id)
+
+        
+
+        fetch(`http://localhost:4000/api/usuarios/${id}`, {
+            method: 'DELETE',
+            mode: 'cors'
+        })
+         .catch(err => console.error(err))
+         .then(res => 
+            res)
+
+    window.location.reload();
+        
+        
+    
+    }
+
+
     componentDidMount(){
-        this.state = null; // AUnque es redundante
+       
         let promesaHttp = window.fetch('http://localhost:4000/api/usuarios/');
         promesaHttp.then((res) => {
             let promesaJSON = res.json();
@@ -19,6 +52,8 @@ class ListaUsuarios extends /*React.*/ Component{
         })
     }
     
+    
+    
     componentWillUnmount(){}
     render(){
         let objViDomJSX
@@ -30,15 +65,21 @@ class ListaUsuarios extends /*React.*/ Component{
              objViDomJSX = (<h1>Cargando...</h1>)
 
         } else {
+
+            
     
 
+           let contIds= 1;
            let filasTr = this.state.listaUsuarios.map((usu)=>{
-                return (<tr key={ usu._id }> 
+                
+            contIds++;
+            return (<tr key={ contIds } > 
                             <td className='columnaTabla'>{usu.name}</td>
                             <td className='columnaTabla'>{usu.email}</td>
                             <td className='columnaTabla'>{usu.edad}</td>
                             <td className='columnaTabla'>
-                            <input type='button' value='Borrar'/>
+                            <input type='button' value='Borrar' data-idusu={usu._id} onClick={this.onDelete} />
+                            <input type='button' value='Editar' />
                             </td></tr>);
             });
             

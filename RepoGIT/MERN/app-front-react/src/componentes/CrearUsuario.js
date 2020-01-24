@@ -111,7 +111,7 @@ class CrearUsuario extends /*React.*/ Component{
                                 onChange={this.onChangePassword}/>
                     </div>
                     <div className='divCampo'><input type="submit" value="Registrar" /></div>
-                    <div className='divCampo'><input type="button" value="Editar" /></div>
+                  
                 </form>
             </div>
         )
