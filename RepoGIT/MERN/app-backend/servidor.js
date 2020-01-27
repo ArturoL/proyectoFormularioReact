@@ -55,6 +55,8 @@ function recibirRegistroPost(peticionHttp, respuestaHttp){
     });
     console.log("La peticion ha sido procesada")
 }
+
+
 rutasAPI.route("/registro").post(recibirRegistroPost);
 
 rutasAPI.route("/").get(function(reqPeticionHttp, resRespuestaHttp){
@@ -67,5 +69,11 @@ if(err){
     });
 });
 
+rutasAPI.route("/:id").delete(function(req,res){
+    Usuario.findById(req.params.id).remove().exec();
+    res.json({
+        "mensaje": "ok"
+    })
+});
 
 

@@ -14,25 +14,19 @@ class ListaUsuarios extends /*React.*/ Component{
 
     }
     onDelete(evt){
-       
         let el = evt.target;
         let id = el.dataset.idusu;
-        console.log(id)
-
-        
-
+        console.log(id);
+       
         fetch(`http://localhost:4000/api/usuarios/${id}`, {
+
             method: 'DELETE',
             mode: 'cors'
         })
          .catch(err => console.error(err))
-         .then(res => 
-            res)
-
-    window.location.reload();
-        
-        
-    
+         .then(res => {
+             this.componentDidMount();
+         });
     }
 
 
@@ -79,7 +73,7 @@ class ListaUsuarios extends /*React.*/ Component{
                             <td className='columnaTabla'>{usu.edad}</td>
                             <td className='columnaTabla'>
                             <input type='button' value='Borrar' data-idusu={usu._id} onClick={this.onDelete} />
-                            <input type='button' value='Editar' />
+                            <input type='button' value='Editar'/>
                             </td></tr>);
             });
             
